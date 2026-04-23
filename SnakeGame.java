@@ -23,7 +23,11 @@ public class SnakeGame {
         private static int highScore = 0;
         private List<Point> snake;
         private List<Point> foods;
+        private List<Color> foodColors;
         private static final int MAX_FOODS = 5;
+        private static final Color[] FRUIT_COLORS = {
+            Color.RED, Color.BLUE, Color.YELLOW, new Color(128, 0, 128), Color.WHITE
+        };
         private int direction; // 0=right, 1=down, 2=left, 3=up
         private int nextDirection;
         private Timer timer;
@@ -87,6 +91,7 @@ public class SnakeGame {
             score = 0;
             gameOver = false;
             foods = new ArrayList<>();
+            foodColors = new ArrayList<>();
             
             spawnFood();
             if (timer != null && !timer.isRunning()) {
@@ -106,7 +111,9 @@ public class SnakeGame {
             }
             while (foods.size() < MAX_FOODS && !emptyCells.isEmpty()) {
                 int idx = random.nextInt(emptyCells.size());
-                foods.add(emptyCells.remove(idx));
+                Point p = emptyCells.remove(idx);
+                foods.add(p);
+                foodColors.add(FRUIT_COLORS[random.nextInt(FRUIT_COLORS.length)]);
             }
         }
 
@@ -142,9 +149,11 @@ public class SnakeGame {
             snake.add(0, newHead);
 
             // Check food collision
-            if (foods.contains(newHead)) {
+            int foodIndex = foods.indexOf(newHead);
+            if (foodIndex >= 0) {
                 score++;
-                foods.remove(newHead);
+                foods.remove(foodIndex);
+                foodColors.remove(foodIndex);
                 spawnFood();
             } else {
                 snake.remove(snake.size() - 1);
@@ -167,8 +176,9 @@ public class SnakeGame {
             }
             
             // Draw food
-            g.setColor(Color.RED);
-            for (Point f : foods) {
+            for (int i = 0; i < foods.size(); i++) {
+                g.setColor(foodColors.get(i));
+                Point f = foods.get(i);
                 g.fillRect(f.x * CELL_SIZE, f.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
             

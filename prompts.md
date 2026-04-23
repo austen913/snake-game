@@ -24,4 +24,10 @@ prompt 6: add 5 total fruit instead of just 1
 
 Result: AI made it so there were 5 red fruits instead of 1
 
-prompt 7: 
+prompt 7: make it so the fruits are either red, blue, yellow, purple, or orange.
+
+Result: AI made it so the fruits are different colors.
+
+Fixes: I couldn't tell there difference between orange and red or maybe there was no orange at all so I decided to make it white instead.
+
+Prompt 8: 
