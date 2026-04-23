@@ -20,4 +20,8 @@ prompt 5: Add a high score that persists across games
 
 Result: AI added a high score that displays on the game over screen.
 
-prompt 6: 
+prompt 6: add 5 total fruit instead of just 1
+
+Result: AI made it so there were 5 red fruits instead of 1
+
+prompt 7: 

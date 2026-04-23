@@ -22,7 +22,8 @@ public class SnakeGame {
     static class GamePanel extends JPanel {
         private static int highScore = 0;
         private List<Point> snake;
-        private Point food;
+        private List<Point> foods;
+        private static final int MAX_FOODS = 5;
         private int direction; // 0=right, 1=down, 2=left, 3=up
         private int nextDirection;
         private Timer timer;
@@ -85,6 +86,7 @@ public class SnakeGame {
             nextDirection = 0;
             score = 0;
             gameOver = false;
+            foods = new ArrayList<>();
             
             spawnFood();
             if (timer != null && !timer.isRunning()) {
@@ -97,13 +99,14 @@ public class SnakeGame {
             for (int x = 0; x < GRID_SIZE; x++) {
                 for (int y = 0; y < GRID_SIZE; y++) {
                     Point p = new Point(x, y);
-                    if (!snake.contains(p)) {
+                    if (!snake.contains(p) && !foods.contains(p)) {
                         emptyCells.add(p);
                     }
                 }
             }
-            if (!emptyCells.isEmpty()) {
-                food = emptyCells.get(random.nextInt(emptyCells.size()));
+            while (foods.size() < MAX_FOODS && !emptyCells.isEmpty()) {
+                int idx = random.nextInt(emptyCells.size());
+                foods.add(emptyCells.remove(idx));
             }
         }
 
@@ -139,8 +142,9 @@ public class SnakeGame {
             snake.add(0, newHead);
 
             // Check food collision
-            if (newHead.equals(food)) {
+            if (foods.contains(newHead)) {
                 score++;
+                foods.remove(newHead);
                 spawnFood();
             } else {
                 snake.remove(snake.size() - 1);
@@ -163,9 +167,9 @@ public class SnakeGame {
             }
             
             // Draw food
-            if (food != null) {
-                g.setColor(Color.RED);
-                g.fillRect(food.x * CELL_SIZE, food.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            g.setColor(Color.RED);
+            for (Point f : foods) {
+                g.fillRect(f.x * CELL_SIZE, f.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
             
             // Draw snake
