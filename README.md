@@ -1,2 +1,2 @@
 # snake-game
-A snake game in Java
+A snake game in Java. This snake game has more fruit that have different effects. The red fruit simply adds score and returns the snake to it's normal speed. The yellow fruit makes the snake go faster, and the blue one makes it go slower. The purple fruit makes the snake lose a segment instead of gain one, and if it loses all of it's segments it dies. The white fruit does a random effect. All fruits give score. There is a high score that shows at the game over screen that will save between games. Additionally the snake changes color based on the fruit it last ate.
