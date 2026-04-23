@@ -20,6 +20,7 @@ public class SnakeGame {
     }
 
     static class GamePanel extends JPanel {
+        private static int highScore = 0;
         private List<Point> snake;
         private Point food;
         private int direction; // 0=right, 1=down, 2=left, 3=up
@@ -120,6 +121,7 @@ public class SnakeGame {
             // Check wall collision
             if (newHead.x < 0 || newHead.x >= GRID_SIZE || newHead.y < 0 || newHead.y >= GRID_SIZE) {
                 gameOver = true;
+                if (score > highScore) highScore = score;
                 timer.stop();
                 repaint();
                 return;
@@ -128,6 +130,7 @@ public class SnakeGame {
             // Check self collision
             if (snake.contains(newHead)) {
                 gameOver = true;
+                if (score > highScore) highScore = score;
                 timer.stop();
                 repaint();
                 return;
@@ -171,10 +174,11 @@ public class SnakeGame {
                 g.fillRect(p.x * CELL_SIZE, p.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
             
-            // Draw score
+            // Draw score and high score
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 16));
             g.drawString("Score: " + score, 10, 25);
+            g.drawString("High Score: " + highScore, 10, 45);
             
             // Draw game over
             if (gameOver) {
@@ -186,15 +190,18 @@ public class SnakeGame {
                 FontMetrics fm = g.getFontMetrics();
                 String gameOverText = "Game Over";
                 String scoreText = "Final Score: " + score;
+                String highScoreText = "High Score: " + highScore;
                 String restartText = "Press R to Restart";
                 int x1 = (GRID_SIZE * CELL_SIZE - fm.stringWidth(gameOverText)) / 2;
                 int x2 = (GRID_SIZE * CELL_SIZE - fm.stringWidth(scoreText)) / 2;
-                int x3 = (GRID_SIZE * CELL_SIZE - fm.stringWidth(restartText)) / 2;
-                g.drawString(gameOverText, x1, GRID_SIZE * CELL_SIZE / 2 - 20);
+                int x3 = (GRID_SIZE * CELL_SIZE - fm.stringWidth(highScoreText)) / 2;
+                int x4 = (GRID_SIZE * CELL_SIZE - fm.stringWidth(restartText)) / 2;
+                g.drawString(gameOverText, x1, GRID_SIZE * CELL_SIZE / 2 - 40);
                 
                 g.setFont(new Font("Arial", Font.BOLD, 20));
-                g.drawString(scoreText, x2, GRID_SIZE * CELL_SIZE / 2 + 20);
-                g.drawString(restartText, x3, GRID_SIZE * CELL_SIZE / 2 + 50);
+                g.drawString(scoreText, x2, GRID_SIZE * CELL_SIZE / 2);
+                g.drawString(highScoreText, x3, GRID_SIZE * CELL_SIZE / 2 + 30);
+                g.drawString(restartText, x4, GRID_SIZE * CELL_SIZE / 2 + 60);
             }
         }
     }
