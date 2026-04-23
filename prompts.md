@@ -36,4 +36,9 @@ Result: The different colored fruits do different effects.
 
 Fixes: The purple fruit would take away the segment it just gained from eating the fruit so it wouldn't lose a segment it would just stay the same, so I changed it to lose 2 segments. Then I ran into a problem where if you lost all segments, the game stopped working. So, I asked the AI to make it so the game over screen pops up if you are less than 1 segment.
 
-Prompt 9: 
+Prompt 9: (I had to do a comment for this one because it didn't let me do the ai chat)
+
+comment: // the snake should change color based on the last fruit eaten
+comment: // Normal - just add score and returns to base speed
+
+I originally wanted to make it so the snake lost a segment every 5 seconds or so after not eating a fruit kind of like a hunger mechanic, but I couldn't get that to work. I instead made it so the snake changes color based on the last fruit it ate and also made it so red returned to the normal speed because I was tired of being slow from eating a blue fruit.

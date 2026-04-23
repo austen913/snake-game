@@ -171,9 +171,12 @@ public class SnakeGame {
 
         private void applyFruitEffect(Color color) {
             score++;
-            
+            lastFruitColor = color; // Update the last fruit color
+
             if (color.equals(Color.RED)) {
-                // Normal - just add score
+                // Normal - just add score and returns to base speed
+                currentDelay = BASE_DELAY;
+                timer.setDelay(BASE_DELAY);
             } else if (color.equals(Color.YELLOW)) {
                 // Faster
                 currentDelay = FAST_DELAY;
@@ -221,6 +224,9 @@ public class SnakeGame {
                 }
             }
         }
+       // the snake should change color based on the last fruit eaten
+            private Color lastFruitColor = Color.GREEN; // default snake color
+
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -245,7 +251,7 @@ public class SnakeGame {
             }
             
             // Draw snake
-            g.setColor(Color.GREEN);
+            g.setColor(lastFruitColor);
             for (Point p : snake) {
                 g.fillRect(p.x * CELL_SIZE, p.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
