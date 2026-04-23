@@ -30,4 +30,10 @@ Result: AI made it so the fruits are different colors.
 
 Fixes: I couldn't tell there difference between orange and red or maybe there was no orange at all so I decided to make it white instead.
 
-Prompt 8: 
+Prompt 8: I want the different colored fruits to do different things. Red should stay as it is, Yellow should make the snake go faster, Blue should make the snake go slower, Purple should make the snake lose a segment, and White should do a random efffect.
+
+Result: The different colored fruits do different effects.
+
+Fixes: The purple fruit would take away the segment it just gained from eating the fruit so it wouldn't lose a segment it would just stay the same, so I changed it to lose 2 segments. Then I ran into a problem where if you lost all segments, the game stopped working. So, I asked the AI to make it so the game over screen pops up if you are less than 1 segment.
+
+Prompt 9: 

@@ -28,12 +28,16 @@ public class SnakeGame {
         private static final Color[] FRUIT_COLORS = {
             Color.RED, Color.BLUE, Color.YELLOW, new Color(128, 0, 128), Color.WHITE
         };
+        private static final int BASE_DELAY = 150;
+        private static final int FAST_DELAY = 80;
+        private static final int SLOW_DELAY = 250;
         private int direction; // 0=right, 1=down, 2=left, 3=up
         private int nextDirection;
         private Timer timer;
         private int score;
         private boolean gameOver;
         private Random random;
+        private int currentDelay = BASE_DELAY;
 
         public GamePanel() {
             setPreferredSize(new Dimension(GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE));
@@ -70,7 +74,7 @@ public class SnakeGame {
             });
 
             // Timer ticks every 150ms
-            timer = new Timer(150, e -> {
+            timer = new Timer(currentDelay, e -> {
                 direction = nextDirection;
                 moveSnake();
                 repaint();
@@ -92,10 +96,14 @@ public class SnakeGame {
             gameOver = false;
             foods = new ArrayList<>();
             foodColors = new ArrayList<>();
+            currentDelay = BASE_DELAY;
             
             spawnFood();
-            if (timer != null && !timer.isRunning()) {
-                timer.start();
+            if (timer != null) {
+                timer.setDelay(currentDelay);
+                if (!timer.isRunning()) {
+                    timer.start();
+                }
             }
         }
 
@@ -151,12 +159,66 @@ public class SnakeGame {
             // Check food collision
             int foodIndex = foods.indexOf(newHead);
             if (foodIndex >= 0) {
-                score++;
+                Color eatenColor = foodColors.get(foodIndex);
+                applyFruitEffect(eatenColor);
                 foods.remove(foodIndex);
                 foodColors.remove(foodIndex);
                 spawnFood();
             } else {
                 snake.remove(snake.size() - 1);
+            }
+        }
+
+        private void applyFruitEffect(Color color) {
+            score++;
+            
+            if (color.equals(Color.RED)) {
+                // Normal - just add score
+            } else if (color.equals(Color.YELLOW)) {
+                // Faster
+                currentDelay = FAST_DELAY;
+                timer.setDelay(FAST_DELAY);
+            } else if (color.equals(Color.BLUE)) {
+                // Slower
+                currentDelay = SLOW_DELAY;
+                timer.setDelay(SLOW_DELAY);
+            } else if (color.equals(new Color(128, 0, 128))) {
+                // Purple loses 2 segments and if snake size is less than 1 game over
+                if (snake.size() > 2) {
+                    snake.remove(snake.size() - 1);
+                    snake.remove(snake.size() - 1);
+                } else {
+                    gameOver = true;
+                    if (score > highScore) highScore = score;
+                    timer.stop();
+                    repaint();
+                }
+            } else if (color.equals(Color.WHITE)) {
+                // Random effect
+                int effect = random.nextInt(4);
+                switch (effect) {
+                    case 0: // Normal
+                        break;
+                    case 1: // Faster
+                        currentDelay = FAST_DELAY;
+                        timer.setDelay(FAST_DELAY);
+                        break;
+                    case 2: // Slower
+                        currentDelay = SLOW_DELAY;
+                        timer.setDelay(SLOW_DELAY);
+                        break;
+                    case 3: // Lose segment
+                        if (snake.size() > 2) {
+                    snake.remove(snake.size() - 1);
+                    snake.remove(snake.size() - 1);
+                } else {
+                    gameOver = true;
+                    if (score > highScore) highScore = score;
+                    timer.stop();
+                    repaint();
+                        break;
+                }
+                }
             }
         }
 
